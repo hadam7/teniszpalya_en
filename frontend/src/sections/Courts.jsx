@@ -45,7 +45,7 @@ function Courts() {
                         className="cursor-pointer disabled:cursor-default disabled:opacity-0 transition-all duration-500 ease-in-out z-10"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                            <path d="M15 6 L9 12 L15 18" stroke="#013237" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M15 6 L9 12 L15 18" stroke="#013237" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
 
                     </button>

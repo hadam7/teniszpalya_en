@@ -106,7 +106,7 @@ function Register() {
             <div className="flex flex-col lg:flex-row min-h-screen gap-10 lg:gap-28 mx-4 sm:mx-8 lg:mx-20">
                   <div className="hidden lg:flex flex-1 my-15 z-10 items-center">
                     <a href="/" className="w-full h-full">
-                        <div className="auth-hero-card bg-[url(/src/assets/tennis_court.jpg)] bg-cover bg-center hover:scale-105 shadow-2xl transition-all duration-500 cursor-pointer z-10" />
+                        <div className="h-full w-full min-h-[400px] bg-[url(/src/assets/tennis_court.jpg)] bg-cover bg-center hover:scale-105 shadow-2xl transition-all duration-500 cursor-pointer rounded-[30px] z-10" />
                     </a>
                 </div>
 
