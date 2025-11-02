@@ -5,6 +5,7 @@ import Hero from '../sections/Hero';
 import Reserve from '../sections/Reserve';
 import Courts from '../sections/Courts';
 import PriceList from '../sections/PriceList';
+import Pricing from '../sections/Pricing';
 import Contact from '../sections/Contact';
 import Footer from '../sections/Footer';
 
@@ -43,6 +44,7 @@ function Home() {
       <div id="Reserve"><Reserve /></div>
       <div id="Courts"><Courts /></div>
       <div id="PriceList"><PriceList /></div>
+      <Pricing />
       <div id="Contact"><Contact /></div>
       <Footer />
     </div>

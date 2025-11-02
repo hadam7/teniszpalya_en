@@ -37,6 +37,11 @@ function Navbar() {
     if (!checkedCookie) return null;
 
     const handleSectionClick = (section) => {
+        // If user clicked 'Courts', navigate to the dedicated courts page instead of trying to scroll home
+        if (section === 'Courts') {
+            navigate('/courts');
+            return;
+        }
         const element = document.getElementById(section);
         if (element) {
             element.scrollIntoView({ behavior: "smooth", block: "start" });
