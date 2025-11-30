@@ -13,33 +13,22 @@ export default function CourtsPage() {
     const [locationFilter, setLocationFilter] = useState('All');
     const [sortOption, setSortOption] = useState('default');
 
+    const [materials, setMaterials] = useState([]);
+
     const { topBlob, bottomBlob } = backgroundPositions.Courts || backgroundPositions.Hero;
 
     useEffect(() => {
         fetch("http://localhost:5044/api/Courts")
             .then((r) => r.json())
             .then((data) => {
-                if (!data || data.length === 0) {
-                    // fallback placeholders for development
-                    setCourts([
-                        { id: 1, material: 'Clay', outdoors: true },
-                        { id: 2, material: 'Hard', outdoors: false },
-                        { id: 3, material: 'Grass', outdoors: true },
-                        { id: 4, material: 'Synthetic', outdoors: false },
-                    ]);
-                } else {
-                    setCourts(data);
-                }
+                setCourts(data);
+                
+                const uniqueMaterials = Array.from(new Set(data.map((c) => c.material).filter(Boolean)));
+                setMaterials(uniqueMaterials);
+                
             })
             .catch((e) => {
                 console.error(e);
-                // show placeholders on fetch error
-                setCourts([
-                    { id: 1, material: 'Clay', outdoors: true },
-                    { id: 2, material: 'Hard', outdoors: false },
-                    { id: 3, material: 'Grass', outdoors: true },
-                    { id: 4, material: 'Synthetic', outdoors: false },
-                ]);
             });
     }, []);
 
@@ -81,7 +70,7 @@ export default function CourtsPage() {
                             onClick={() => navigate('/')}
                             whileHover={{ scale: 1.03 }}
                             whileTap={{ scale: 0.98 }}
-                            className="px-5 py-2 border border-gray-300 rounded-[10px] bg-white flex items-center gap-2 shadow-sm hover:shadow-md transition-colors duration-200"
+                            className="px-5 py-2 border cursor-pointer border-gray-300 rounded-[10px] bg-white flex items-center gap-2 shadow-sm hover:shadow-md transition-colors duration-200"
                             aria-label="Back to home"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" className="stroke-dark-green">
@@ -97,10 +86,7 @@ export default function CourtsPage() {
                         <label className="text-sm text-dark-green-half">Filter:</label>
                         <motion.select whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.99 }} value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)} className="px-3 py-2 border rounded">
                             <option value="All">All types</option>
-                            <option value="Clay">Clay</option>
-                            <option value="Hard">Hard</option>
-                            <option value="Grass">Grass</option>
-                            <option value="Synthetic">Synthetic</option>
+                            {materials.map((m, i) => <option key={i} value={m}>{m}</option>)}
                         </motion.select>
                         <motion.select whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.99 }} value={locationFilter} onChange={(e) => setLocationFilter(e.target.value)} className="px-3 py-2 border rounded">
                             <option value="All">All locations</option>
@@ -150,7 +136,7 @@ export default function CourtsPage() {
                     return (
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                             {sorted.map((c) => (
-                                <CourtCard key={c.id ?? c.ID ?? c.Id} court={c} isSelected={selectedId === (c.id ?? c.ID ?? c.Id)} onClick={() => window.location.href = `/courts?selected=${c.id ?? c.ID ?? c.Id}`} />
+                                <CourtCard key={c.id ?? c.ID ?? c.Id} court={c} isSelected={selectedId === (c.id ?? c.ID ?? c.Id)} />
                             ))}
                         </div>
                     );

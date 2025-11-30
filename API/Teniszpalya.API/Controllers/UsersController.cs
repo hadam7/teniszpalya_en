@@ -57,19 +57,13 @@ namespace Teniszpalya.API.Controllers
         }
 
         [Authorize]
-        [HttpGet("me")]
-        public async Task<IActionResult> GetCurrentUser()
-        {
-            var userID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var user = await _context.Users.FindAsync(int.Parse(userID));
-            return Ok(new { user.ID, user.FirstName, user.LastName, user.Email, user.PhoneNumber });
-        }
-
-        [Authorize]
         [HttpPut("edit")]
         public async Task<IActionResult> EditProfile(ProfileDTO profileDTO)
         {
             var userID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (userID == null) return NotFound();
+
             var user = await _context.Users.FindAsync(int.Parse(userID));
 
             if (user == null) return NotFound();

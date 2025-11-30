@@ -1,16 +1,15 @@
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Navbar from '../components/Navbar'
 import Hero from '../sections/Hero';
-import Reserve from '../sections/Reserve';
 import Courts from '../sections/Courts';
 import PriceList from '../sections/PriceList';
-import Pricing from '../sections/Pricing';
 import Contact from '../sections/Contact';
 import Footer from '../sections/Footer';
 
 import { backgroundPositions } from "../backgroundPositions";
 import useScrollSection from "../useScrollSection";
+import { ReserveMenuProvider } from "../contexts/ReserveMenuContext";
 
 function Home() {
   const sectionIds = ["Hero", "Reserve", "Courts", "PriceList", "Contact"];
@@ -38,15 +37,15 @@ function Home() {
         animate={bottomBlob}
         transition={{ duration: 1.2, ease: "easeInOut" }}
       />
-
-      <div id="Navbar"><Navbar /></div>
-      <div id="Hero"><Hero /></div>
-      <div id="Reserve"><Reserve /></div>
-      <div id="Courts"><Courts /></div>
-      <div id="PriceList"><PriceList /></div>
-      <Pricing />
-      <div id="Contact"><Contact /></div>
-      <Footer />
+      
+      <ReserveMenuProvider>
+        <div id="Navbar"><Navbar /></div>
+        <div id="Hero"><Hero /></div>
+        <div id="Courts"><Courts /></div>
+        <div id="PriceList"><PriceList /></div>
+        <div id="Contact"><Contact /></div>
+        <Footer />
+      </ReserveMenuProvider>
     </div>
   );
 }

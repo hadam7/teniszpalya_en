@@ -1,37 +1,45 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useCurrentUser } from "../hooks/useCurrentUser";
+
 function Login(){
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
+    const {authenticated} = useCurrentUser();
+
     const navigateToRegister = () => {
         navigate("/register");
     }
 
-    const handleLogin = (e) => {
-        e.preventDefault();
+    useEffect(() => {
+        if (authenticated === true) {
+            navigate("/");
+        }
+    }, [authenticated]);
 
-        fetch('http://localhost:5044/api/Login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email, password }),
-            credentials: 'include'
-        })
-        .then(response => {
-            if (response.ok) {
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        try {
+            const res = await fetch ("http://localhost:5044/api/auth/login", {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ email, password }),
+                credentials: 'include'
+            });
+            if (res.ok) {
                 navigate("/");
-            } else {
-                alert('Invalid email or password');
             }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    };
+            else {
+                alert("Invalid email or password");
+            }
+        }
+        catch (error) {
+            console.error("Error:", error);
+        }
+    }
 
 
     return (
@@ -41,11 +49,6 @@ function Login(){
 
             {/* Kétoszlopos layout (Register mintájára) */}
             <div className="flex flex-col lg:flex-row min-h-screen gap-10 lg:gap-28 mx-4 sm:mx-8 lg:mx-20">
-                <div className="hidden lg:flex flex-1 my-15 z-10 items-center">
-                    <a href="/" className="w-full h-full">
-                        <div className="auth-hero-card w-[560px] max-w-full min-h-[520px] bg-[url(/src/assets/tennis_court.jpg)] bg-cover bg-center hover:scale-105 shadow-2xl transition-all duration-500 cursor-pointer rounded-[30px] z-10" />
-                    </a>
-                </div>
 
                 <div className="flex-1 flex flex-col justify-center py-10 lg:py-0">
                     <form onSubmit={handleLogin}>
@@ -95,6 +98,11 @@ function Login(){
                             </div>
                         </div>
                     </form>
+                </div>
+                <div className="hidden lg:flex flex-1 my-15 z-10 items-center">
+                    <a href="/" className="w-full h-full">
+                        <div className=" w-full h-full bg-[url(/src/assets/tennis_court.jpg)] bg-cover bg-center hover:scale-105 shadow-2xl transition-all duration-500 cursor-pointer rounded-[30px] z-10" />
+                    </a>
                 </div>
             </div>
         </div>

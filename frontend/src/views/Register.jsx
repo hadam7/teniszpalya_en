@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import InputField from "../components/InputField";
+import { useCurrentUser } from "../hooks/useCurrentUser";
 
 function Register() {
     const [isVisible, setIsVisible] = useState(false);
@@ -17,6 +18,14 @@ function Register() {
     const [passwordError, setPasswordError] = useState("");
 
     const navigate = useNavigate();
+
+    const { authenticated } = useCurrentUser();
+
+    useEffect(() => {
+        if (authenticated == true) {
+            navigate("/");
+        }
+    }, [authenticated]);
 
     const validateForm = async () => {
         let valid = true;
@@ -75,13 +84,13 @@ function Register() {
         };
 
         try {
-            await fetch("http://localhost:5044/api/Register", {
+            await fetch("http://localhost:5044/api/auth/register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data)
             });
             console.log("User created successfully");
-            await fetch("http://localhost:5044/api/Login", {
+            await fetch("http://localhost:5044/api/auth/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password }),
@@ -106,7 +115,7 @@ function Register() {
             <div className="flex flex-col lg:flex-row min-h-screen gap-10 lg:gap-28 mx-4 sm:mx-8 lg:mx-20">
                   <div className="hidden lg:flex flex-1 my-15 z-10 items-center">
                     <a href="/" className="w-full h-full">
-                        <div className="auth-hero-card bg-[url(/src/assets/tennis_court.jpg)] bg-cover bg-center hover:scale-105 shadow-2xl transition-all duration-500 cursor-pointer z-10" />
+                        <div className="h-full w-full min-h-[400px] bg-[url(/src/assets/tennis_court.jpg)] bg-cover bg-center hover:scale-105 shadow-2xl transition-all duration-500 cursor-pointer rounded-[30px] z-10" />
                     </a>
                 </div>
 
